@@ -118,6 +118,53 @@ group by titles.title
 order by avg(salaries.salary);
 		
 
+
+
+-- ------------------------------------------------------
+-- ppt p.119 예제문제
+-- 예제 5
+select	titles.title as '직책',
+		avg(salaries.salary) as '평균연봉',
+        count(*) as '인원수'
+from	salaries, titles, employees
+where	salaries.to_date = '9999-01-01'
+	and titles.to_date = '9999-01-01'
+    and employees.emp_no = salaries.emp_no
+    and employees.emp_no = titles.emp_no
+group by titles.title
+having	count(titles.title) >= 100;
+
+
+-- 예제 6
+select	departments.dept_name as '부서이름',
+		avg(salaries.salary) '평균연봉'
+from	salaries, employees, departments, dept_emp, titles
+where	salaries.to_date = '9999-01-01'
+	and dept_emp.to_date = '9999-01-01'
+	and titles.to_date = '9999-01-01'
+    and employees.emp_no = salaries.emp_no
+    and employees.emp_no = dept_emp.emp_no
+    and employees.emp_no = titles.emp_no
+    and departments.dept_no = dept_emp.dept_no
+	and titles.title = 'Engineer'
+group by departments.dept_name;
+
+
+-- 예제 7
+select	titles.title as '직책',
+		sum(salaries.salary) as '급여 총합'
+from	titles, employees, salaries
+where	salaries.to_date = '9999-01-01'
+	and titles.to_date = '9999-01-01'
+    and employees.emp_no = salaries.emp_no
+    and employees.emp_no = titles.emp_no
+    and titles.title <> 'Engineer'
+group by titles.title
+having sum(salaries.salary) >= 2000000000
+order by sum(salaries.salary) desc;
+
+
+
 -- 아래의 sql문은 테이블 조회를 위한 sql문입니다.
 select * from salaries;
 select * from employees;
